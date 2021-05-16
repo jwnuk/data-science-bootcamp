@@ -6,8 +6,9 @@ create table county_facts_dictionary
     description varchar
 );
 
-alter table county_facts_dictionary
-    owner to postgres;
+-- WARNING: this is considered dangerous and may not work every machine
+-- alter table county_facts_dictionary
+--     owner to postgres;
 
 create unique index county_facts_dictionary_column_name_uindex
     on county_facts_dictionary (column_name);
