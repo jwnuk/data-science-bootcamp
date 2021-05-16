@@ -97,17 +97,6 @@ where ranking = 1 ;
 select * from winners_in_states ;
 
 
-/*create view party_counter
-as
-select 
-	state
-,	party
-,	candidate
-,	percent_votes
-,	case 	when upper(party) = 'DEMOCRAT' then 1 else -1 end counter
-from winners_in_states ;*/
-
-
 
 
 
