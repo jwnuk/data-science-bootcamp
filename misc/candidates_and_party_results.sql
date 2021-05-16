@@ -7,7 +7,6 @@ select
 ,	pr.county 
 ,	pr.party 
 ,	sum(pr.votes) as votes_for_party
-/*,	sum(pr.votes) over(partition by county) as vote_sum_per_county --b³¹d - jak ni¿ej*/
 from primary_results pr
 group by pr.fips 
 ,	pr.state
@@ -16,24 +15,26 @@ group by pr.fips
 order by pr.fips ;
 
 select * from party_votes_per_county ;
---drop view party_votes_per_county ;
 
+/*procent g³osów na dan¹ partiê w poszczególnych hrabstwach*/
+create view percent_party_per_county
+as
+select 
+	pvpc.* 
+,	sv.vote_sum
+,	case	when vote_sum = 0 then null
+			else round(pvpc.votes_for_party::numeric / sv.vote_sum * 100, 3) end as vote_percent
+from party_votes_per_county pvpc
+left join (
+	select 
+		fips 
+	,	sum(votes) vote_sum
+	from primary_results pr 
+	group by fips ) as sv
+on pvpc.fips = sv.fips ;
 
----------------------------TUTAJ B£¥D - POWIELAJ¥ SIÊ NAZWY HRABSTW W RÓ¯NYCH STANACH --> DO POPRAWY
-/*create view percent_party_per_county
-as*/
-select *
-,	sum(votes_for_party) over (partition by county) vote_sum
-,	round(votes_for_party / sum(votes_for_party) over (partition by county) *100,3) vote_percent
-from party_votes_per_county 
-order by state, county ;
+select * from percent_party_per_county ;
 
-select * from party_votes_per_county 
-where county = 'Barbour';
-
------------------------------------------------------------------------------------------------------
-
-----------OK
 /*liczba g³osów na dan¹ partiê w poszczególnych stanach*/
 create view party_votes_per_state
 as
@@ -49,7 +50,6 @@ order by pr.state ;
 
 select * from party_votes_per_state ;
 
------------OK
 /*procent g³osów na dan¹ partiê w poszczególnych stanach*/
 create view percent_party_per_state
 as
@@ -60,7 +60,6 @@ from party_votes_per_state ;
 
 select * from percent_party_per_state ;
 
-------------OK
 --ranking kandydatów w poszczególnych stanach 
 create view candidates_in_states
 as
@@ -99,14 +98,14 @@ select * from winners_in_states ;
 
 
 /*create view party_counter
-as*/
+as
 select 
 	state
 ,	party
 ,	candidate
 ,	percent_votes
 ,	case 	when upper(party) = 'DEMOCRAT' then 1 else -1 end counter
-from winners_in_states ;
+from winners_in_states ;*/
 
 
 
