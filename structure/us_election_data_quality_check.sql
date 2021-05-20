@@ -49,9 +49,9 @@ and state_abbreviation not similar to '[A-Z]{2}'
 order by fips ;
 
 --^USA i Alabama nie maj¹ przypisanej wartoœci null
---dla ujednolicenia przypisujê null tym polom 
-update county_facts set state_abbreviation = null 
-where area_name = 'United States' or area_name = 'Alabama' ;
+--dla ujednolicenia przypisujê null tym polom
+--patrz: us_election_fixes.sql 
+
 
 --ponowne sprawdzenie wartoœci null
 select 
@@ -87,13 +87,7 @@ from primary_results pr
 where pr.fips <0 or pr.fips isnull ;
 
 --update tabeli
-update primary_results pr
-set fips = (
-	select cf.fips 
-	from county_facts cf 
-	where cf.area_name = concat(pr.county, ' County') 
-	and cf.state_abbreviation = pr.state_abbreviation)
-where pr.fips isnull ;
+--patrz: us_election_fixes.sql
 
 --ponowne sprawdzenie, czy fips zawsze dodatni
 select *
@@ -176,23 +170,7 @@ from primary_results pr
 full join county_facts cf on pr.fips = cf.fips 
 where cf.fips isnull or pr.fips isnull and cf.state_abbreviation is not null ;
 
-delete from primary_results 
-where fips in (
-select  
-	pr.fips 
-from primary_results pr 
-full join county_facts cf on pr.fips = cf.fips 
-where cf.fips isnull
-) ;
-
-delete from county_facts 
-where fips in (
-select  
-	cf.fips 
-from primary_results pr 
-full join county_facts cf on pr.fips = cf.fips 
-where pr.fips isnull and cf.state_abbreviation is not null
-) ;
+--zapytania delete patrz: us_election_fixes.sql
 
 --po usuniêciu poni¿sze zapytanie powinno zwracaæ zera:
 select  
