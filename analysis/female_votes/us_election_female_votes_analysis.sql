@@ -1,145 +1,51 @@
---sprawdzenie, które kolumny dot. p³ci
+/*- jak wygl¹da podzia³ ze wzglêdu na p³eæ osób g³osuj¹cych w poszczególnych stanach?*/
+/*- jak wygl¹da rozk³ad g³osów na poszczególnych kandydatów z podzia³em na p³eæ?*/
 
-select * from county_facts_dictionary cfd 
-where lower(cfd.description) like '%fem%'
-or lower(cfd.description) like '%sex%'
-or lower(cfd.description) like '%gend%';
+/*sprawdzenie, które kolumny dotycz¹ p³ci*/
+SELECT *
+FROM
+  county_facts_dictionary cfd
+WHERE
+  lower(cfd.description) LIKE '%fem%'
+  OR lower(cfd.description) LIKE '%sex%'
+  OR lower(cfd.description) LIKE '%gend%';
 
---wypisanie wyników (primary_results) z kolumn¹ dot. p³ci
-select 
-	cf.fips
-,	cf.sex255214 procent_kobiet
-,	cf.area_name cf_area
-,	pr.*
-from county_facts cf 
-right join primary_results pr on cf.fips = pr.fips ;
+/*- jak wygl¹da podzia³ ze wzglêdu na p³eæ osób g³osuj¹cych w poszczególnych stanach?*/
+SELECT
+  cf.fips ,
+  cf.area_name ,
+  cf.sex255214 
+FROM
+  county_facts cf
+WHERE
+  cf.state_abbreviation ISNULL
+ORDER BY
+  fips ;
 
---wyniki partii w poszczególnych hrabstwach
-select 
-	cf.fips
-,	cf.sex255214 procent_kobiet
-,	pr.state 
-,	pr.county 
-,	pr.party 
-,	sum(pr.votes)
-from county_facts cf 
-right join primary_results pr on cf.fips = pr.fips 
-group by cf.fips 
-,	cf.sex255214 
-,	pr.state
-,	pr.county 
-,	pr.party
-order by pr.state ;
 
---wyniki partii w poszczególnych stanach
---drop table glosy_partie ;
+/*wyniki partii w poszczególnych hrabstwach*/
+SELECT
+  pvpc.* ,
+  cf.sex255214 AS percent_women
+FROM
+  party_votes_per_county pvpc
+JOIN county_facts cf ON
+  pvpc.fips = cf.fips
+ORDER BY pvpc.fips, votes_for_party DESC ;
 
-create temp table glosy_partie
-as
-select 
-	pr.state 
-,	round(avg(cf.sex255214),3) sr_kobiet_per_stan
-,	pr.party 
-,	sum(pr.votes) l_glosow
-from county_facts cf 
-right join primary_results pr on cf.fips = pr.fips 
-group by pr.state 
-,	pr.party
-order by pr.state ;
+SELECT * ,
+  sum(votes_for_party) OVER (PARTITION BY fips)
+FROM party_votes_per_county pvpc
+ORDER BY 6 ;
 
-select *
-,	sum(l_glosow) over (partition by state) suma_glosow
-,	round(l_glosow / sum(l_glosow) over (partition by state) *100,3) procent_glosow
-from glosy_partie ;
+SELECT * ,
+  sum(votes_for_party) OVER (PARTITION BY fips)
+FROM party_votes_per_county pvpc
+WHERE lower(state) = 'arkansas' AND lower(county) = 'carroll' ;
 
---ranking kandydatów w poszczególnych stanach 
-create temp table wyniki_kandydat_stan
-as
-select 
-	pr.state 
-,	round(avg(cf.sex255214),3) sr_kobiet_per_stan
-,	pr.party 
-,	pr.candidate 
-,	sum(pr.votes) l_glosow_per_kandydat
-,	rank() over(partition by pr.state order by sum(pr.votes) desc) ranking
-from county_facts cf 
-right join primary_results pr on cf.fips = pr.fips 
-group by pr.state 
-,	pr.candidate 
-,	pr.party
-order by pr.state ;
 
-select * from wyniki_kandydat_stan ;
-
-create temp table procent_stan
-as
-select *
-,	sum(l_glosow_per_kandydat) over (partition by state) suma_glosow
-,	round(l_glosow_per_kandydat / sum(l_glosow_per_kandydat) over (partition by state) * 100::numeric, 3) procent_glosow
-from wyniki_kandydat_stan ;
-
-select * from procent_stan ;
-
---wyniki dla stanow gdzie >=50% kobiet i <50% kobiet
-create temp table counter_more_equal_50
-as
-select 
-	state
-,	sr_kobiet_per_stan
-,	party
-,	candidate
-,	procent_glosow
-,	case 	when upper(party) = 'DEMOCRAT' then 1 else -1 end counter_more
-from procent_stan 
-where ranking = 1
-and sr_kobiet_per_stan >= 50 ;
-
-select * from counter_more_equal_50 ;
-
-create temp table counter_less_than_50
-as
-select 
-	state
-,	sr_kobiet_per_stan
-,	party
-,	candidate
-,	procent_glosow
-,	case 	when upper(party) = 'DEMOCRAT' then 1 else -1 end counter_less
-from procent_stan 
-where ranking = 1
-and sr_kobiet_per_stan < 50 ;
-
-select * from counter_less_than_50 ;
-
-select 
-	avg(cm.sr_kobiet_per_stan)
-,	sum(counter_more) counter
-,	case	when sum(counter_more) > 0 then 'Democrat wins'
-			when sum(counter_more) < 0 then 'Republican wins'
-			else 'Tie' end final_result
-from counter_more_equal_50 cm
-union
-select 
-	avg(cl.sr_kobiet_per_stan) counter
-,	sum(counter_less)
-,	case	when sum(counter_less) > 0 then 'Democrat wins'
-			when sum(counter_less) < 0 then 'Republican wins'
-			else 'Tie' end final_result
-from counter_less_than_50 cl ;
-
---wygrany/a kandydat/ka z liczb¹ stanów, w których wygrali
-select * from procent_stan ;
-
-select 
-	candidate
-,	party
-,	count(*) state_counter
-,	avg(procent_glosow) sr_procent_glosow
-,	avg(sr_kobiet_per_stan) sr_kobiet
-from procent_stan
-where ranking = 1 
-group by candidate, party
-order by sr_kobiet desc ;
+---------------------------------------------------------------------------------
+/* tutaj wyniki do usuniêcia */
 
 
 
@@ -147,3 +53,186 @@ order by sr_kobiet desc ;
 
 
 
+
+
+
+
+
+
+
+
+
+/*wyniki partii w poszczególnych stanach*/
+SELECT
+  pppc.* ,
+  cf.sex255214 
+FROM
+  percent_party_per_county pppc
+JOIN county_facts cf ON
+  pppc.fips = cf.fips ;
+
+SELECT
+  ppps.* ,
+  cf.area_name ,
+  cf.sex255214 
+FROM
+  percent_party_per_state ppps
+LEFT JOIN county_facts cf ON
+  ppps.state = cf.area_name 
+ORDER BY state, vote_percent DESC ;
+
+
+
+
+
+
+
+
+
+
+/*ranking kandydatów w poszczególnych stanach */
+CREATE TEMP TABLE wyniki_kandydat_stan AS
+SELECT pr.state ,
+  round(avg(cf.sex255214), 3) sr_kobiet_per_stan ,
+  pr.party ,
+  pr.candidate ,
+  sum(pr.votes) l_glosow_per_kandydat ,
+  RANK() OVER(
+    PARTITION BY pr.state
+  ORDER BY
+    sum(pr.votes) DESC
+  ) ranking
+FROM
+  county_facts cf
+RIGHT JOIN primary_results pr ON
+  cf.fips = pr.fips
+GROUP BY
+  pr.state ,
+  pr.candidate ,
+  pr.party
+ORDER BY
+  pr.state ;
+
+SELECT *
+FROM
+  wyniki_kandydat_stan ;
+
+CREATE TEMP TABLE procent_stan AS
+SELECT * ,
+  sum(l_glosow_per_kandydat) OVER (
+    PARTITION BY state
+  ) suma_glosow ,
+  round(l_glosow_per_kandydat / sum(l_glosow_per_kandydat) OVER (PARTITION BY state) * 100::NUMERIC, 3) procent_glosow
+FROM
+  wyniki_kandydat_stan ;
+
+SELECT *
+FROM
+  procent_stan ;
+
+
+
+
+
+
+
+
+
+
+
+/*wyniki dla stanow gdzie >=50% kobiet i <50% kobiet*/
+CREATE TEMP TABLE counter_more_equal_50 AS
+SELECT
+  state ,
+  sr_kobiet_per_stan ,
+  party ,
+  candidate ,
+  procent_glosow ,
+  CASE
+    WHEN upper(party) = 'DEMOCRAT' THEN 1
+    ELSE -1
+  END counter_more
+FROM
+  procent_stan
+WHERE
+  ranking = 1
+  AND sr_kobiet_per_stan >= 50 ;
+
+SELECT *
+FROM
+  counter_more_equal_50 ;
+
+CREATE TEMP TABLE counter_less_than_50 AS
+SELECT
+  state ,
+  sr_kobiet_per_stan ,
+  party ,
+  candidate ,
+  procent_glosow ,
+  CASE
+    WHEN upper(party) = 'DEMOCRAT' THEN 1
+    ELSE -1
+  END counter_less
+FROM
+  procent_stan
+WHERE
+  ranking = 1
+  AND sr_kobiet_per_stan < 50 ;
+
+SELECT *
+FROM
+  counter_less_than_50 ;
+
+SELECT
+  avg(cm.sr_kobiet_per_stan) ,
+  sum(counter_more) counter ,
+  CASE
+    WHEN sum(counter_more) > 0 THEN 'Democrat wins'
+    WHEN sum(counter_more) < 0 THEN 'Republican wins'
+    ELSE 'Tie'
+  END final_result
+FROM
+  counter_more_equal_50 cm
+UNION
+SELECT
+  avg(cl.sr_kobiet_per_stan) counter ,
+  sum(counter_less) ,
+  CASE
+    WHEN sum(counter_less) > 0 THEN 'Democrat wins'
+    WHEN sum(counter_less) < 0 THEN 'Republican wins'
+    ELSE 'Tie'
+  END final_result
+FROM
+  counter_less_than_50 cl ;
+
+
+
+
+
+
+
+
+
+
+
+
+/*wygrany/a kandydat/ka z liczb¹ stanów, w których wygrali*/
+SELECT *
+FROM
+  procent_stan ;
+
+SELECT
+  candidate ,
+  party ,
+  count(*) state_counter ,
+  avg(procent_glosow) sr_procent_glosow ,
+  avg(sr_kobiet_per_stan) sr_kobiet
+FROM
+  procent_stan
+WHERE
+  ranking = 1
+GROUP BY
+  candidate,
+  party
+ORDER BY
+  sr_kobiet DESC ;
