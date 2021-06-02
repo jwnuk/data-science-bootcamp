@@ -107,8 +107,6 @@ ORDER BY cr.party, 5 DESC ;
 --|50.52            |50.8  |Republican|John Kasich    |58          |45.16             |
 --|51.29            |50.8  |Republican|Marco Rubio    |39          |36.94             |
 
-/*Tutaj jakieœ wnioski*/
-
 /*podzia³ hrabstw ze wzglêdu na populacjê kobiet: */
 CREATE TEMP TABLE IF NOT EXISTS quartiles AS 
 SELECT
@@ -122,6 +120,8 @@ FROM
   county_facts cf
 WHERE
   cf.state_abbreviation IS NOT NULL ;
+
+SELECT * FROM quartiles ;
 
 /*wyniki kandydatów w hrabstwach, gdzie populacja kobiet mieœci siê w pierwszym kwartylu*/
 SELECT
@@ -260,8 +260,114 @@ ORDER BY
  * 
  * W partii Demokratów dla ka¿dego przedzia³u Hillary Clinton zdobywa hrabstwa o œrednio wiêkszej populacji kobiet.
  * W partii Republikan hrabstwa o najwy¿szej œredniej populacji kobiet zdobywa Marco Rubio w drugim do czwartego kwartyla.
- * Jedynie w pierwszym zdobywa je John Kasich. */
+ * Jedynie w pierwszym zdobywa je John Kasich.*/
 
 /*UWAGI:
  * W drugim oraz trzecim kwartylu jedynie nieznaczne ró¿nice w populacji kobiet dla poszczególnych kandydatów. */
 
+-----------------------
+/*sprawdzenie korelacji dla poszczególnych kandydatów*/
+
+/*ile razy kandydat znalaz³ siê na liœcie wyników*/
+SELECT
+  DISTINCT candidate ,
+  count(*)
+FROM
+  county_ranking cr 
+JOIN county_facts cf ON
+  cr.fips = cf.fips 
+GROUP BY
+  candidate
+ORDER BY
+  2 DESC ;
+
+/*zale¿noœæ % g³osów oddanych na kandydata od populacji kobiet badam dla kandydatów,
+ * którzy pojawiaj¹ siê w wynikach dla co najmniej 20% stanów*/
+SELECT
+  round(0.2 * count(DISTINCT fips)) AS min_counties
+FROM
+  county_ranking cr ;
+
+DROP VIEW candidates_in_counties_vs_female ;
+CREATE OR REPLACE
+VIEW candidates_in_counties_vs_female AS
+SELECT
+  cr.* ,
+  CASE
+    WHEN cr.candidate = 'Bernie Sanders' THEN 1
+    WHEN cr.candidate = 'Hillary Clinton' THEN 2
+    WHEN cr.candidate = 'Donald Trump' THEN 3
+    WHEN cr.candidate = 'John Kasich' THEN 4
+    WHEN cr.candidate = 'Ted Cruz' THEN 5
+    WHEN cr.candidate = 'Marco Rubio' THEN 6
+    WHEN cr.candidate = 'Ben Carson' THEN 7
+    ELSE NULL
+  END AS candidate_number
+FROM
+  county_ranking cr ;
+
+SELECT * FROM candidates_in_counties_vs_female cicvf ;
+
+/*wyniki*/
+SELECT
+  count(*) ,
+  candidate ,
+  party ,
+  CORR(fraction_votes, percent_women) ,
+  @corr(
+    fraction_votes,
+    percent_women
+  ) AS corr_abs
+FROM
+  candidates_in_counties_vs_female cicvf
+WHERE
+  candidate_number IS NOT NULL
+GROUP BY
+  candidate ,
+  party
+ORDER BY
+  5 DESC ;
+
+--|count|candidate      |party     |corr                |corr_abs           |
+--|-----|---------------|----------|--------------------|-------------------|
+--|2807 |Hillary Clinton|Democrat  |0.12945645964134336 |0.12945645964134336|
+--|2807 |Bernie Sanders |Democrat  |-0.09807058631948133|0.09807058631948133|
+--|2720 |John Kasich    |Republican|0.08544999846168005 |0.08544999846168005|
+--|1899 |Marco Rubio    |Republican|0.06899939843198523 |0.06899939843198523|
+--|1031 |Ben Carson     |Republican|0.06815723164514095 |0.06815723164514095|
+--|2720 |Ted Cruz       |Republican|-0.06412795851878263|0.06412795851878263|
+--|2720 |Donald Trump   |Republican|-0.04534598735380448|0.04534598735380448|
+
+/*Wniosek:
+ * W przeciwieñstwie do wyników dla stanów, w przypadku poszczególnych hrabstw korelacje
+ * dla wszystkich kandydatów miêdzy oddanymi na nich g³osami praktycznie nie wystêpuj¹. 
+ * Dalej najwiêksze zale¿noœci istniej¹ w partii Demokratów,
+ * jednak znacznie (ok. siedmiokrotnie) s³absze. (0.71 vs 0.13/0.1)
+ * 
+ * Prawdopodobnie zbyt szczegó³owe wyniki w przypadku podzia³u na hrabstwa. */
+
+/*wyniki dla kandydatów, na których g³osowano w <20% hrabstw
+ * sprawdzenie, czy w ich wypadku zale¿noœæ jest wy¿sza*/
+SELECT
+  count(*) ,
+  candidate ,
+  party ,
+  CORR(fraction_votes, percent_women) ,
+  @corr(
+    fraction_votes,
+    percent_women
+  ) AS corr_abs
+FROM
+  candidates_in_counties_vs_female cicvf
+WHERE
+  candidate_number ISNULL
+GROUP BY
+  candidate ,
+  party
+ORDER BY
+  5 DESC ;
+
+/*Wniosek:
+ * Dla kandydatów, na których oddano g³osy w <20% hrabstw, zale¿noœci oddanych g³osów 
+ * od populacji kobiet s¹ ju¿ nieco bardziej widoczne (0.04-0.32, mediana 0.12 vs 0.05-0.13, mediana 0.07), 
+ * jednak dalej korelacjê w najlepszym przypadku mo¿na uznaæ za co najwy¿ej s³ab¹.*/

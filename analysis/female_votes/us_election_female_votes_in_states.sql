@@ -217,8 +217,6 @@ ORDER BY
  * W partii Republikan w obu przypadkach wygrywa Donald Trump.*/
 
 
-
-
 /*procent kobiet zawiera siê w przedziale <47.4, 52.6>, dalsze rozwa¿ania przeprowadzone z podzia³em na poni¿ej/powy¿ej œredniej/mediany */
 /*liczba stanów, gdzie kobiety stanowi¹ wiêcej/mniej ni¿ œrednio w US */
 CREATE TEMP TABLE avg_med
@@ -358,7 +356,6 @@ ORDER BY
   cpis.party ,
   4 DESC ;
 
-
 /*przedzia³ < us_med*/
 SELECT
   round(avg(amc.percent_women),2) AS avg_percent_women ,
@@ -433,9 +430,10 @@ ORDER BY
 --|51.16            |Republican|Donald Trump   |20        |46.68            |
 --|51.10            |Republican|John Kasich    |1         |47.57            |
 
-/*Sprawdzenie korelacji dla poszczególnych kandydatów*/
 
-/*Ile razy kandydat znalaz³ siê na liœcie wyników*/
+/*sprawdzenie korelacji dla poszczególnych kandydatów*/
+
+/*ile razy kandydat znalaz³ siê na liœcie wyników*/
 SELECT
   DISTINCT candidate ,
   count(*)
@@ -448,7 +446,7 @@ GROUP BY
 ORDER BY
   2 DESC ;
 
-/*Zale¿noœæ wygranej kandydata od populacji kobiet badam dla kandydatów,
+/*zale¿noœæ % g³osów oddanych na kandydata od populacji kobiet badam dla kandydatów,
  * którzy co najmniej 10 razy pojawiaj¹ siê w wynikach dla stanów*/
 
 CREATE OR REPLACE
@@ -473,25 +471,39 @@ JOIN county_facts cf ON
 
 SELECT * FROM candidates_in_states_vs_female cisvf ;
 
-/*Wyniki*/
+/*wyniki*/
 SELECT
   count(*) ,
   candidate ,
-  corr(percent_votes, percent_women) ,
-  @corr(percent_votes, percent_women) AS corr_abs
+  party ,
+  CORR(percent_votes, percent_women) ,
+  @corr(
+    percent_votes,
+    percent_women
+  ) AS corr_abs
 FROM
   candidates_in_states_vs_female cisvf
-  WHERE candidate_number IS NOT NULL 
-GROUP BY candidate 
-ORDER BY 4 DESC ;
+WHERE
+  candidate_number IS NOT NULL
+GROUP BY
+  candidate ,
+  party
+ORDER BY
+  5 DESC ;
+
+--|count|candidate      |party     |corr                |corr_abs           |
+--|-----|---------------|----------|--------------------|-------------------|
+--|41   |Hillary Clinton|Democrat  |0.7083132717827585  |0.7083132717827585 |
+--|41   |Bernie Sanders |Democrat  |-0.7079765694068759 |0.7079765694068759 |
+--|11   |Ben Carson     |Republican|0.47165486434308895 |0.47165486434308895|
+--|39   |John Kasich    |Republican|0.2256123095785897  |0.2256123095785897 |
+--|39   |Ted Cruz       |Republican|-0.19232923996835724|0.19232923996835724|
+--|22   |Marco Rubio    |Republican|-0.13001618368927229|0.13001618368927229|
+--|39   |Donald Trump   |Republican|-0.04971340765341561|0.04971340765341561|
 
 /*Wniosek:
  * - najwiêksz¹ zale¿noœæ widaæ w partii Demokratów. (0.71)
- * - w partii Republikan dla wiêkszoœci kandydatów istnieje s³aba korelacja,
+ * - w partii Republikan dla wiêkszoœci kandydatów istnieje bardzo s³aba korelacja,
  *   b¹dŸ praktycznie zupe³ny brak zwi¹zku miêdzy oddanymi na nich g³osami 
  *   z populacj¹ kobiet w danym stanie, w przypadku Johna Kasich mo¿na stwierdziæ
  *   nisk¹ korelacjê, w przypadku Bena Carsona - umiarkowan¹.*/
-
-
-
-
