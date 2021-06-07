@@ -35,7 +35,7 @@ ORDER BY
   3 DESC ;
 
 /*wyci¹gam wartoœci skrajne*/
-WITH cte AS (
+WITH min_max AS (
   SELECT
     min(cf2.sex255214) AS min_val ,
     max(cf2.sex255214) AS max_val
@@ -49,8 +49,8 @@ SELECT
   cf.sex255214 AS percent_women
 FROM
   county_facts cf
-JOIN cte ON
-  cf.sex255214 = cte.min_val OR cf.sex255214 = cte.max_val
+JOIN min_max ON
+  cf.sex255214 = min_max.min_val OR cf.sex255214 = min_max.max_val
 WHERE
   cf.state_abbreviation ISNULL
 ORDER BY
@@ -58,7 +58,7 @@ ORDER BY
 
 /*procent kobiet zawiera siê w przedziale <47.4, 52.6>, dalsze rozwa¿ania przeprowadzone z podzia³em na <50%, =50%, >50% */
 /*liczba stanów, gdzie kobiety stanowi¹ wiêcej, mniej lub równo 50%*/
-WITH cte AS (
+WITH more_less AS (
   SELECT
     cf.fips ,
     cf.area_name ,
@@ -79,7 +79,7 @@ SELECT
   women_rate ,
   count(women_rate) AS number_of_states
 FROM
-  cte
+  more_less
 GROUP BY
   women_rate 
 ORDER BY women_rate DESC ;
@@ -126,7 +126,7 @@ SELECT
   cpis.party ,
   cpis.candidate ,
   count(cpis.state) AS times_won ,
-  round(avg(cpis.percent_votes), 2) AS avg_percent_votes 
+  round(avg(cpis.percent_votes), 2) AS avg_percent_votes
 FROM
   candidates_percent_in_states cpis
 JOIN county_facts cf ON
@@ -477,10 +477,7 @@ SELECT
   candidate ,
   party ,
   CORR(percent_votes, percent_women) ,
-  @corr(
-    percent_votes,
-    percent_women
-  ) AS corr_abs
+  @corr(percent_votes, percent_women) AS corr_abs
 FROM
   candidates_in_states_vs_female cisvf
 WHERE

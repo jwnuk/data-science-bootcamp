@@ -26,7 +26,7 @@ ORDER BY
   3 DESC ;
 
 /*wyci¹gam tylko wartoœci skrajne*/
-WITH cte AS (
+WITH min_max AS (
   SELECT
     min(cf2.sex255214) AS min_val ,
     max(cf2.sex255214) AS max_val
@@ -40,8 +40,8 @@ SELECT
   cf.sex255214 AS percent_women
 FROM
   county_facts cf
-JOIN cte ON
-  cf.sex255214 = cte.min_val OR cf.sex255214 = cte.max_val
+JOIN min_max ON
+  cf.sex255214 = min_max.min_val OR cf.sex255214 = min_max.max_val
 WHERE
   cf.state_abbreviation IS NOT NULL
 ORDER BY
@@ -61,12 +61,7 @@ SELECT
   pr.candidate ,
   pr.votes ,
   pr.fraction_votes ,
-  RANK() OVER (
-    PARTITION BY pr.fips ,
-    pr.party
-  ORDER BY
-    pr.votes DESC
-  ) AS ranking
+  RANK() OVER (PARTITION BY pr.fips, pr.party ORDER BY pr.votes DESC) AS ranking
 FROM
   county_facts cf
 JOIN primary_results pr ON
@@ -314,10 +309,7 @@ SELECT
   candidate ,
   party ,
   CORR(fraction_votes, percent_women) ,
-  @corr(
-    fraction_votes,
-    percent_women
-  ) AS corr_abs
+  @corr(fraction_votes, percent_women) AS corr_abs
 FROM
   candidates_in_counties_vs_female cicvf
 WHERE
@@ -353,10 +345,7 @@ SELECT
   candidate ,
   party ,
   CORR(fraction_votes, percent_women) ,
-  @corr(
-    fraction_votes,
-    percent_women
-  ) AS corr_abs
+  @corr(fraction_votes, percent_women) AS corr_abs
 FROM
   candidates_in_counties_vs_female cicvf
 WHERE
