@@ -69,20 +69,21 @@ select
 ,	cw.party
 ,	cw.summary_votes
 ,	cw.whites_percentage
-,	(case when "candidate" like 'Hillary Clinton' then 1
-		  when "candidate" like 'Bernie Sanders' then 2
-		  when "candidate" like 'Donald Trump' then 3
-		  when "candidate" like 'Ted Cruz' then 4
-		  when "candidate" like 'Jeb Bush' then 5
-		  when "candidate" like 'Carly Fiorina' then 6
-		  when "candidate" like 'Martin O''Malley' then 7
-		  when "candidate" like 'John Kasich' then 8
-		  when "candidate" like 'Rand Paul' then 9
-		  when "candidate" like 'Chris Christie' then 10
-		  when "candidate" like 'Ben Carson' then 11
-		  when "candidate" like 'Mike Huckabee' then 12
-		  when "candidate" like 'Marco Rubio' then 13
-		  else 0 end) as ile
+,	(case 
+	 when cw."candidate" like 'Hillary Clinton' then 1
+	 when cw."candidate" like 'Bernie Sanders' then 2
+	 when cw."candidate" like 'Donald Trump' then 3
+	 when cw."candidate" like 'Ted Cruz' then 4
+	 when cw."candidate" like 'Jeb Bush' then 5
+	 when cw."candidate" like 'Carly Fiorina' then 6
+	 when cw."candidate" like 'Martin O''Malley' then 7
+	 when cw."candidate" like 'John Kasich' then 8
+	 when cw."candidate" like 'Rand Paul' then 9
+	 when cw."candidate" like 'Chris Christie' then 10
+	 when cw."candidate" like 'Ben Carson' then 11
+	 when cw."candidate" like 'Mike Huckabee' then 12
+	 when cw."candidate" like 'Marco Rubio' then 13
+	 else 0 end) as ile
 from candidate_winners cw
 where cw.whites_percentage > (select avg(cf.rhi125214) from county_facts cf)
 group by cw.state, cw.state_abbreviation, cw.candidate, cw.party, cw.summary_votes, cw.whites_percentage;
@@ -107,20 +108,21 @@ select
 ,	cw.party
 ,	cw.summary_votes
 ,	cw.black_amercian_or_african_percentage
-,	(case when "candidate" like 'Hillary Clinton' then 1
-		  when "candidate" like 'Bernie Sanders' then 2
-		  when "candidate" like 'Donald Trump' then 3
-		  when "candidate" like 'Ted Cruz' then 4
-		  when "candidate" like 'Jeb Bush' then 5
-		  when "candidate" like 'Carly Fiorina' then 6
-		  when "candidate" like 'Martin O''Malley' then 7
-		  when "candidate" like 'John Kasich' then 8
-		  when "candidate" like 'Rand Paul' then 9
-		  when "candidate" like 'Chris Christie' then 10
-		  when "candidate" like 'Ben Carson' then 11
-		  when "candidate" like 'Mike Huckabee' then 12
-		  when "candidate" like 'Marco Rubio' then 13
-		  else 0 end) as ile
+,	(case 
+	 when cw."candidate" like 'Hillary Clinton' then 1
+	 when cw."candidate" like 'Bernie Sanders' then 2
+	 when cw."candidate" like 'Donald Trump' then 3
+	 when cw."candidate" like 'Ted Cruz' then 4
+	 when cw."candidate" like 'Jeb Bush' then 5
+	 when cw."candidate" like 'Carly Fiorina' then 6
+	 when cw."candidate" like 'Martin O''Malley' then 7
+	 when cw."candidate" like 'John Kasich' then 8
+	 when cw."candidate" like 'Rand Paul' then 9
+	 when cw."candidate" like 'Chris Christie' then 10
+	 when cw."candidate" like 'Ben Carson' then 11
+	 when cw."candidate" like 'Mike Huckabee' then 12
+	 when cw."candidate" like 'Marco Rubio' then 13
+	 else 0 end) as ile
 from candidate_winners cw
 where cw.black_amercian_or_african_percentage > (select avg(cf.rhi225214) from county_facts cf)
 group by cw.state, cw.state_abbreviation, cw.candidate, cw.party, cw.summary_votes, cw.black_amercian_or_african_percentage;
@@ -143,20 +145,21 @@ select
 ,	cw.party
 ,	cw.summary_votes
 ,	cw.american_indian_or_alaska_percentage
-,	(case when "candidate" like 'Hillary Clinton' then 1
-		  when "candidate" like 'Bernie Sanders' then 2
-		  when "candidate" like 'Donald Trump' then 3
-		  when "candidate" like 'Ted Cruz' then 4
-		  when "candidate" like 'Jeb Bush' then 5
-		  when "candidate" like 'Carly Fiorina' then 6
-		  when "candidate" like 'Martin O''Malley' then 7
-		  when "candidate" like 'John Kasich' then 8
-		  when "candidate" like 'Rand Paul' then 9
-		  when "candidate" like 'Chris Christie' then 10
-		  when "candidate" like 'Ben Carson' then 11
-		  when "candidate" like 'Mike Huckabee' then 12
-		  when "candidate" like 'Marco Rubio' then 13
-		  else 0 end) as ile
+,	(case 
+	 when cw."candidate" like 'Hillary Clinton' then 1
+	 when cw."candidate" like 'Bernie Sanders' then 2
+	 when cw."candidate" like 'Donald Trump' then 3
+	 when cw."candidate" like 'Ted Cruz' then 4
+	 when cw."candidate" like 'Jeb Bush' then 5
+	 when cw."candidate" like 'Carly Fiorina' then 6
+	 when cw."candidate" like 'Martin O''Malley' then 7
+	 when cw."candidate" like 'John Kasich' then 8
+	 when cw."candidate" like 'Rand Paul' then 9
+	 when cw."candidate" like 'Chris Christie' then 10
+	 when cw."candidate" like 'Ben Carson' then 11
+	 when cw."candidate" like 'Mike Huckabee' then 12
+	 when cw."candidate" like 'Marco Rubio' then 13
+	 else 0 end) as ile
 from candidate_winners cw
 where cw.american_indian_or_alaska_percentage > (select avg(cf.rhi325214) from county_facts cf)
 group by cw.state, cw.state_abbreviation, cw.candidate, cw.party, cw.summary_votes, cw.american_indian_or_alaska_percentage;
@@ -179,20 +182,21 @@ select
 ,	cw.party
 ,	cw.summary_votes
 ,	cw.asian_percentage
-,	(case when "candidate" like 'Hillary Clinton' then 1
-		  when "candidate" like 'Bernie Sanders' then 2
-		  when "candidate" like 'Donald Trump' then 3
-		  when "candidate" like 'Ted Cruz' then 4
-		  when "candidate" like 'Jeb Bush' then 5
-	   	  when "candidate" like 'Carly Fiorina' then 6
-		  when "candidate" like 'Martin O''Malley' then 7
-		  when "candidate" like 'John Kasich' then 8
-		  when "candidate" like 'Rand Paul' then 9
-		  when "candidate" like 'Chris Christie' then 10
-		  when "candidate" like 'Ben Carson' then 11
-		  when "candidate" like 'Mike Huckabee' then 12
-		  when "candidate" like 'Marco Rubio' then 13
-		  else 0 end) as ile
+,	(case 
+	 when cw."candidate" like 'Hillary Clinton' then 1
+	 when cw."candidate" like 'Bernie Sanders' then 2
+	 when cw."candidate" like 'Donald Trump' then 3
+	 when cw."candidate" like 'Ted Cruz' then 4
+	 when cw."candidate" like 'Jeb Bush' then 5
+	 when cw."candidate" like 'Carly Fiorina' then 6
+	 when cw."candidate" like 'Martin O''Malley' then 7
+	 when cw."candidate" like 'John Kasich' then 8
+	 when cw."candidate" like 'Rand Paul' then 9
+	 when cw."candidate" like 'Chris Christie' then 10
+	 when cw."candidate" like 'Ben Carson' then 11
+	 when cw."candidate" like 'Mike Huckabee' then 12
+	 when cw."candidate" like 'Marco Rubio' then 13
+	 else 0 end) as ile
 from candidate_winners cw
 where cw.asian_percentage > (select avg(cf.rhi425214) from county_facts cf)
 group by cw.state, cw.state_abbreviation, cw.candidate, cw.party, cw.summary_votes, cw.asian_percentage;
@@ -215,20 +219,21 @@ select
 ,	cw.party
 ,	cw.summary_votes
 ,	cw.native_hwaian_or_pacific_ocean_percentage
-,	(case when "candidate" like 'Hillary Clinton' then 1
-		  when "candidate" like 'Bernie Sanders' then 2
-		  when "candidate" like 'Donald Trump' then 3
-		  when "candidate" like 'Ted Cruz' then 4
-		  when "candidate" like 'Jeb Bush' then 5
-		  when "candidate" like 'Carly Fiorina' then 6
-		  when "candidate" like 'Martin O''Malley' then 7
-		  when "candidate" like 'John Kasich' then 8
-		  when "candidate" like 'Rand Paul' then 9
-		  when "candidate" like 'Chris Christie' then 10
-		  when "candidate" like 'Ben Carson' then 11
-		  when "candidate" like 'Mike Huckabee' then 12
-		  when "candidate" like 'Marco Rubio' then 13
-		  else 0 end) as ile
+,	(case 
+	 when cw."candidate" like 'Hillary Clinton' then 1
+	 when cw."candidate" like 'Bernie Sanders' then 2
+	 when cw."candidate" like 'Donald Trump' then 3
+	 when cw."candidate" like 'Ted Cruz' then 4
+	 when cw."candidate" like 'Jeb Bush' then 5
+	 when cw."candidate" like 'Carly Fiorina' then 6
+	 when cw."candidate" like 'Martin O''Malley' then 7
+	 when cw."candidate" like 'John Kasich' then 8
+	 when cw."candidate" like 'Rand Paul' then 9
+	 when cw."candidate" like 'Chris Christie' then 10
+	 when cw."candidate" like 'Ben Carson' then 11
+	 when cw."candidate" like 'Mike Huckabee' then 12
+	 when cw."candidate" like 'Marco Rubio' then 13
+	 else 0 end) as ile
 from candidate_winners cw
 where cw.native_hwaian_or_pacific_ocean_percentage > (select avg(cf.rhi525214) from county_facts cf)
 group by cw.state, cw.state_abbreviation, cw.candidate, cw.party, cw.summary_votes, cw.native_hwaian_or_pacific_ocean_percentage;
@@ -251,20 +256,21 @@ select
 ,	cw.party
 ,	cw.summary_votes
 ,	cw.hispanic_or_latino_percentage
-,	(case when "candidate" like 'Hillary Clinton' then 1
-		  when "candidate" like 'Bernie Sanders' then 2
-		  when "candidate" like 'Donald Trump' then 3
-		  when "candidate" like 'Ted Cruz' then 4
-		  when "candidate" like 'Jeb Bush' then 5
-		  when "candidate" like 'Carly Fiorina' then 6
-		  when "candidate" like 'Martin O''Malley' then 7
-		  when "candidate" like 'John Kasich' then 8
-		  when "candidate" like 'Rand Paul' then 9
-		  when "candidate" like 'Chris Christie' then 10
-		  when "candidate" like 'Ben Carson' then 11
-		  when "candidate" like 'Mike Huckabee' then 12
-		  when "candidate" like 'Marco Rubio' then 13
-		  else 0 end) as ile
+,	(case 
+	 when cw."candidate" like 'Hillary Clinton' then 1
+	 when cw."candidate" like 'Bernie Sanders' then 2
+	 when cw."candidate" like 'Donald Trump' then 3
+	 when cw."candidate" like 'Ted Cruz' then 4
+	 when cw."candidate" like 'Jeb Bush' then 5
+	 when cw."candidate" like 'Carly Fiorina' then 6
+	 when cw."candidate" like 'Martin O''Malley' then 7
+	 when cw."candidate" like 'John Kasich' then 8
+	 when cw."candidate" like 'Rand Paul' then 9
+	 when cw."candidate" like 'Chris Christie' then 10
+	 when cw."candidate" like 'Ben Carson' then 11
+	 when cw."candidate" like 'Mike Huckabee' then 12
+	 when cw."candidate" like 'Marco Rubio' then 13
+	 else 0 end) as ile
 from candidate_winners cw
 where cw.hispanic_or_latino_percentage > (select avg(cf.rhi725214) from county_facts cf)
 group by cw.state, cw.state_abbreviation, cw.candidate, cw.party, cw.summary_votes, cw.hispanic_or_latino_percentage;
@@ -287,20 +293,21 @@ select
 ,	cw.party
 ,	cw.summary_votes
 ,	cw.two_or_more_races_percentage
-,	(case when "candidate" like 'Hillary Clinton' then 1
-		  when "candidate" like 'Bernie Sanders' then 2
-		  when "candidate" like 'Donald Trump' then 3
-		  when "candidate" like 'Ted Cruz' then 4
-		  when "candidate" like 'Jeb Bush' then 5
-		  when "candidate" like 'Carly Fiorina' then 6
-		  when "candidate" like 'Martin O''Malley' then 7
-		  when "candidate" like 'John Kasich' then 8
-		  when "candidate" like 'Rand Paul' then 9
-		  when "candidate" like 'Chris Christie' then 10
-		  when "candidate" like 'Ben Carson' then 11
-		  when "candidate" like 'Mike Huckabee' then 12
-		  when "candidate" like 'Marco Rubio' then 13
-		  else 0 end) as ile
+,	(case 
+	 when cw."candidate" like 'Hillary Clinton' then 1
+	 when cw."candidate" like 'Bernie Sanders' then 2
+	 when cw."candidate" like 'Donald Trump' then 3
+	 when cw."candidate" like 'Ted Cruz' then 4
+	 when cw."candidate" like 'Jeb Bush' then 5
+	 when cw."candidate" like 'Carly Fiorina' then 6
+	 when cw."candidate" like 'Martin O''Malley' then 7
+	 when cw."candidate" like 'John Kasich' then 8
+	 when cw."candidate" like 'Rand Paul' then 9
+	 when cw."candidate" like 'Chris Christie' then 10
+	 when cw."candidate" like 'Ben Carson' then 11
+	 when cw."candidate" like 'Mike Huckabee' then 12
+	 when cw."candidate" like 'Marco Rubio' then 13
+	 else 0 end) as ile
 from candidate_winners cw
 where cw.two_or_more_races_percentage > (select avg(cf.rhi625214) from county_facts cf)
 group by cw.state, cw.state_abbreviation, cw.candidate, cw.party, cw.summary_votes, cw.two_or_more_races_percentage;
@@ -316,8 +323,8 @@ order by party, how_many_times_winner desc;
 --sparawdzam czarnoskorego kandydata Ben Carson w jakich stanach najepiej mu poszlo--
 --czy w tych stanach procent osob czarnoskorych byl wyzszy niz przecietnie--
 
-select * from candidate_winners
-where "candidate" like 'Ben Carson';
+select cw.* from candidate_winners cw
+where cw."candidate" like 'Ben Carson';
 
 select scv.* from summary_votes scv
 join state_summary sm on scv.state=sm.area_name
