@@ -5,7 +5,7 @@ select
 	cf.fips
 ,	cf.area_name
 ,	cf.state_abbreviation 
-,	cf.rhi125214 whites_percentage
+,	cf.rhi825214 whites_percentage
 ,	cf.rhi225214 black_amercian_or_african_percentage
 ,	cf.rhi325214 american_indian_or_alaska_percentage
 ,	cf.rhi425214 asian_percentage
@@ -57,6 +57,20 @@ where "rank" = 1;
 
 select * from candidate_winners cw;
 
+--wspolczynnik korelacji--
+
+select 
+	cw.party
+,	round(corr(cw.whites_percentage, cw.summary_votes)::numeric,3) whites_correlation
+,	round(corr(cw.black_amercian_or_african_percentage, cw.summary_votes)::numeric,3) black_amercian_or_african_correlation
+,	round(corr(cw.american_indian_or_alaska_percentage, cw.summary_votes)::numeric,3) american_indian_or_alaska_correlation
+,	round(corr(cw.asian_percentage, cw.summary_votes)::numeric,3) asian_correlation
+,	round(corr(cw.native_hwaian_or_pacific_ocean_percentage, cw.summary_votes)::numeric,3) native_hwaian_or_pacific_ocean_correlation
+,	round(corr(cw.hispanic_or_latino_percentage, cw.summary_votes)::numeric,3) hispanic_or_latino_percentage_correlation
+,	round(corr(cw.two_or_more_races_percentage, cw.summary_votes)::numeric,3) two_or_more_races_correlation
+from candidate_winners cw
+group by cw.party;
+
 --sprawdzam czy jesli dana grupa etniczna byla liczniejsza niz jej srednia, czy istaniala jakas tendencja do glosowania na poszczegolnych kandydatow--
 
 --whites--
@@ -85,7 +99,7 @@ select
 	 when cw."candidate" like 'Marco Rubio' then 13
 	 else 0 end) as ile
 from candidate_winners cw
-where cw.whites_percentage > (select avg(cf.rhi125214) from county_facts cf)
+where cw.whites_percentage > (select avg(cf.rhi825214) from county_facts cf)
 group by cw.state, cw.state_abbreviation, cw.candidate, cw.party, cw.summary_votes, cw.whites_percentage;
 
 select* from working_version_whites wvw;
@@ -94,9 +108,10 @@ select
 	candidate
 ,	party
 ,	count("ile") as how_many_times_winner
+,	corr(whites_percentage, summary_votes )
 from working_version_whites wvw
 group by candidate, party
-order by how_many_times_winner desc;
+order by party, how_many_times_winner desc;
 
 --osoby czarnosk�re--
 create temp table working_version_black
@@ -131,9 +146,10 @@ select
 	candidate
 ,	party
 ,	count("ile") as how_many_times_winner
+,	corr(black_amercian_or_african_percentage, summary_votes )
 from working_version_black
 group by candidate, party
-order by how_many_times_winner desc;
+order by party, how_many_times_winner desc;
 
 --american_indian_or_alaska--
 create temp table working_version_indian
@@ -168,6 +184,7 @@ select
 	candidate
 ,	party
 ,	count("ile") as how_many_times_winner
+,	corr(american_indian_or_alaska_percentage, summary_votes )
 from working_version_indian
 group by candidate, party
 order by party, how_many_times_winner desc;
@@ -205,6 +222,7 @@ select
 	candidate
 ,	party
 ,	count("ile") as how_many_times_winner
+,	corr(asian_percentage, summary_votes )
 from working_version_asian
 group by party, candidate 
 order by party, how_many_times_winner desc;
@@ -242,6 +260,7 @@ select
 	candidate
 ,	party
 ,	count("ile") as how_many_times_winner
+,	corr(native_hwaian_or_pacific_ocean_percentage, summary_votes)
 from working_version_hawaian
 group by candidate, party
 order by party, how_many_times_winner desc;
@@ -279,6 +298,7 @@ select
 	candidate
 ,	party
 ,	count("ile") as how_many_times_winner
+,	corr(hispanic_or_latino_percentage, summary_votes)
 from working_version_hispanic_or_latino
 group by candidate, party
 order by party, how_many_times_winner desc;
@@ -316,17 +336,9 @@ select
 	candidate
 ,	party
 ,	count("ile") as how_many_times_winner
+,	corr(two_or_more_races_percentage, summary_votes)
 from working_version_two_or_more_races
 group by candidate, party
 order by party, how_many_times_winner desc;
 
---sparawdzam czarnoskorego kandydata Ben Carson w jakich stanach najepiej mu poszlo--
---czy w tych stanach procent osob czarnoskorych byl wyzszy niz przecietnie--
-
-select cw.* from candidate_winners cw
-where cw."candidate" like 'Ben Carson';
-
-select scv.* from summary_votes scv
-join state_summary sm on scv.state=sm.area_name
-where scv."candidate" like 'Ben Carson' and sm.black_amercian_or_african_percentage > (select avg(cf.rhi225214) from county_facts cf);
 
