@@ -45,3 +45,7 @@ def corr_color(val):
 df_corr = corr_table.style.applymap(corr_color)
 
 df_original = pd.read_csv('..\..\WA_Fn-UseC_-HR-Employee-Attrition.csv')
+
+def print_values(data_frame, column_name: str):
+    values = data_frame[column_name].value_counts()
+    print(values, '\n')
