@@ -39,6 +39,10 @@ class AttritionPlots:
 
     #     filtrowanie pojedynczych rekordow
         df1 = df1.groupby('JobLevel').filter(lambda x: x.shape[0] > 4)
+        
+        if len(df1) == 0:
+            print('It is uncommon for people at your position to decide to leave their job.')
+            return
 
         plt.figure(figsize=(6, 2))
         sns.set_style('whitegrid')
