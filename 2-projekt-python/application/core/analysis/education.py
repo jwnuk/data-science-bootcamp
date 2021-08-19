@@ -1,16 +1,19 @@
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import numpy as np
+import pandas as pd
+import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy import stats as st
 
 class EducationPlots:
     def __init__ (self, df):
         self.df = df
-        
-    def plot_eductaion_salary (self, s: int, education_field, eductaion_level):
+    
+    # fixed typo
+    def plot_education_salary(self, s: int, education_field, eductaion_level):
         df = self.df
-
         edu_dict = dict(df[(df['EducationField'] == education_field) 
                            & (df['Education'] == eductaion_level)]['MonthlyIncome'].describe())
 
@@ -78,9 +81,8 @@ class EducationPlots:
             plt.axvline(x=s, color='r', linestyle='-', linewidth=2)
             plt.title(gen_title)
             
-    def plot_eductaion_job_level(self, s: int, education_field, eductaion_level):
+    def plot_education_job_level(self, s: int, education_field, eductaion_level):
         df = self.df
-
         edu_dict = dict(df[(df['EducationField'] == education_field)
                            & (df['Education'] == eductaion_level)]['JobLevel'].describe())
 
@@ -150,20 +152,9 @@ class EducationPlots:
             plt.axvline(x=s, color='r', linestyle='-', linewidth=2)
             plt.title(gen_title)
             
-    def plot_attrition (self, education_field, eductaion_level):
+    
+    def plot_education_attrition(self, education_field: str, eductaion_level: int):
         df = self.df
-
-        df1 = df[(df['EducationField'] == education_field) & (df['Education'] == education_field)]
-
-        if df1['Attrition'].count() > 0 and len(df1['Attrition'].unique()) == 2:
-            sns.histplot(df1, x="Attrition", hue="cut", multiple="stack", palette="light:m_r", edgecolor=".3", 
-                         linewidth=.5, log_scale=True)
-            ax.xaxis.set_major_formatter(mpl.ticker.ScalarFormatter())
-            ax.set_xticks([500, 1000, 2000, 5000, 10000])
-            
-    def plot_education_attrition (self, education_field: str, eductaion_level: int):
-        df = self.df
-
         df1 = df[(df['EducationField'] == education_field) & (df['Education'] == eductaion_level)]
 
         if df1['Attrition'].count() > 0 and len(df1['Attrition'].unique()) == 2:
@@ -174,9 +165,9 @@ class EducationPlots:
             sns.displot(x='Education', hue='Attrition', data=df[df['EducationField'] == education_field], 
                         hue_order=[True, False])
             
+    
     def plot_education_overtme(self, education_field: str, education_level: int):
         df = self.df
-
         df1 = df[(df['EducationField'] == education_field) & (df['Education'] == education_level)]
 
         if df1['OverTime'].count() > 0 and len(df1['OverTime'].unique()) == 2:
