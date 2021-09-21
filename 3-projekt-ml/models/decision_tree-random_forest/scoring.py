@@ -2,15 +2,30 @@ import numpy as np
 import pandas as pd
 
 class ModelHandler:
+    """
+    Object allows to operate on given model and provides predictions for user input.
+    """    
 
     def __init__(self, model, df):
+        """
+        Constructor of class ModelHandler.
+        """
+
         self.model = model
         self.df = df
     
     
     def predict_for_user_input (self, mushroom_data: dict):
-        local_df = pd.DataFrame(columns=self.df.columns)
+        """
+        Function that predicts if the mushroom is edible or not based on user input data.
+        At first it takes shroom data and puts it in to a dictionary.
+        Then fills the predefined dataframe row with:
+        - ones for true values,
+        - zeros for false values,
+        - minus ones for missing data.
+        """
 
+        local_df = pd.DataFrame(columns=self.df.columns)
         mushroom_dict = {}
 
         for column in list(local_df.columns):
@@ -28,11 +43,15 @@ class ModelHandler:
             else:
                 mushroom_dict[column] = -1
 
-
         local_df = local_df.append(mushroom_dict, ignore_index=True)
         return int(self.model.predict(local_df))
     
+
     def get_features(self):
+        """
+        Function returns a list of features (without one hot encoding).
+        """
+
         columns_original = set()
     
         for column in self.df.columns:
@@ -42,54 +61,35 @@ class ModelHandler:
     
         return list(columns_original)
 
+
+
 class TestModel(ModelHandler):
+    """
+    Object provides functions to validate model's accuracy with different.
+    """
 
     def __init__(self,  model, df):
         super().__init__(model, df)
 
-    def shroom_check(self, sample, prediction: int):
-        """
-        Function checks if prediction was consistent with the class value from original dataframe.
-        """
-        
-        ix = sample.index[0]
-        result = prediction == self.df.iloc[ix]['class_p']
-
-        return result
 
     def test_predictions(self, n=100, df=None):
         """
-        Function gives results for n iteration of prediction from random samples from dataset.
+        Function gives results for predictions from n random samples from dataset.
         """
-
-# TO DO: replace shroom_check with model.score (preparation of y needed)
-
-        self.get_features()
 
         if df is None:
             df = self.df
 
-        correct_values = 0
-        i = 0
-        X = df.copy(deep=False)
-        
-        for col in X.columns:
-            if 'class' in col:
-                X.drop(col, axis=1, inplace=True)
-        
-        while i < n:
-            sample = X.sample()
-            prediction = int(self.model.predict(sample))
-            check = self.shroom_check(sample, prediction)
-        
-            if check == True:
-                correct_values += 1
-            
-            i += 1
+        sample = df.sample(n)
 
-        print(f'True predictions: {correct_values} ({100 * correct_values / n}%)')
-        print(f'False predictions: {n - correct_values} ({100 - 100 * correct_values / n}%)')
+        X_sample = sample.drop(['class_e', 'class_p'], axis=1)
+        y_sample = sample['class_p']
+
+        score = self.model.score(X_sample, y_sample)
+
+        print(f'Model score on {n} samples: {score}')
     
+
     def copy_df_with_nan_values(self, columns_to_nan = set(), filler = -1):
         """
         Function returns a copy from dataset with n features filled with filler.
@@ -106,12 +106,15 @@ class TestModel(ModelHandler):
         
         return df_copy
 
-    def test_for_empty_feature(self):
+    def test_for_empty_feature(self, n=100):
+        """
+        Function removes one feature at a time and tests model accuracy for n samples.
+        """
 
         for col in self.get_features():
             print(f'Results for {col}')
             g = self.copy_df_with_nan_values(set([col]))
-            self.test_predictions(100, g)
+            self.test_predictions(n, g)
             print('\n')
     
     def get_random_features(self, n_randoms: int):
@@ -130,9 +133,12 @@ class TestModel(ModelHandler):
         
         return random_columns
 
-    def test_for_missing_n_features(self, n: int):
+    def test_for_missing_m_features(self, m_features=1, n_samples=100):
+        """
+        Function removes m features from dataset and tests predictions for n samples.
+        """
 
-        random_features = self.get_random_features(n)
+        random_features = self.get_random_features(m_features)
         print(f'Removed features: {random_features}')
         test_df = self.copy_df_with_nan_values(random_features)
-        self.test_predictions(df=test_df)
+        self.test_predictions(n_samples, df=test_df)
