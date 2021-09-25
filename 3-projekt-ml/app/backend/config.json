@@ -1,0 +1,831 @@
+[
+  {
+    "id": "cap-shape",
+    "name": "Cap Shape",
+    "name_pl": "Kształt kapelusza",
+    "values": [
+      {
+        "id": "b",
+        "name": "Bell",
+        "name_pl": "Dzwon"
+      },
+      {
+        "id": "c",
+        "name": "Conical",
+        "name_pl": "Stożek"
+      },
+      {
+        "id": "f",
+        "name": "Flat",
+        "name_pl": "Płaski"
+      },
+      {
+        "id": "k",
+        "name": "Knobbed",
+        "name_pl": "Garbowaty"
+      },
+      {
+        "id": "s",
+        "name": "Sunken",
+        "name_pl": "Wklęsły"
+      },
+      {
+        "id": "x",
+        "name": "Covex",
+        "name_pl": "Wypukły"
+      }
+    ],
+    "suggestion": [
+      {
+        "id": "b",
+        "name": "Bell",
+        "name_pl": "Dzwon",
+        "image": "/illustrations/cap_shape/cap_shape_b.png"
+      },
+      {
+        "id": "c",
+        "name": "Conical",
+        "name_pl": "Stożek",
+        "image": "/illustrations/cap_shape/cap_shape_c.png"
+      },
+      {
+        "id": "f",
+        "name": "Flat",
+        "name_pl": "Płaski",
+        "image": "/illustrations/cap_shape/cap_shape_f.png"
+      },
+      {
+        "id": "k",
+        "name": "Knobbed",
+        "name_pl": "Garbowaty",
+        "image": "/illustrations/cap_shape/cap_shape_k.png"
+      },
+      {
+        "id": "s",
+        "name": "Sunken",
+        "name_pl": "Wklęsły",
+        "image": "/illustrations/cap_shape/cap_shape_s.png"
+      },
+      {
+        "id": "x",
+        "name": "Covex",
+        "name_pl": "Wypukły",
+        "image": "/illustrations/cap_shape/cap_shape_x.png"
+      }
+    ]
+  },
+  {
+    "id": "cap-surface",
+    "name": "Cap Surface",
+    "name_pl": "Powierzchnia kapelusza",
+    "values": [
+      {
+        "id": "f",
+        "name": "Fibrous",
+        "name_pl": "Włóknista"
+      },
+      {
+        "id": "g",
+        "name": "Grooves",
+        "name_pl": "Żłobiona"
+      },
+      {
+        "id": "y",
+        "name": "Scaly",
+        "name_pl": "Łuskowata"
+      },
+      {
+        "id": "s",
+        "name": "Smooth",
+        "name_pl": "Gładka"
+      }
+    ]
+  },
+  {
+    "id": "cap-color",
+    "name": "Cap Color",
+    "name_pl": "Kolor kapelusza",
+    "values": [
+      {
+        "id": "b",
+        "name": "Buff",
+        "name_pl": "Spłowiały żółty"
+      },
+      {
+        "id": "c",
+        "name": "Cinnamon",
+        "name_pl": "Cynamonowy"
+      },
+      {
+        "id": "e",
+        "name": "Red",
+        "name_pl": "Czerwony"
+      },
+      {
+        "id": "g",
+        "name": "Gray",
+        "name_pl": "Szary"
+      },
+      {
+        "id": "n",
+        "name": "Brown",
+        "name_pl": "Brązowy"
+      },
+      {
+        "id": "p",
+        "name": "Pink",
+        "name_pl": "Różowy"
+      },
+      {
+        "id": "r",
+        "name": "Green",
+        "name_pl": "Zielony"
+      },
+      {
+        "id": "u",
+        "name": "Purple",
+        "name_pl": "Fioletowy"
+      },
+      {
+        "id": "w",
+        "name": "White",
+        "name_pl": "Biały"
+      },
+      {
+        "id": "y",
+        "name": "Yellow",
+        "name_pl": "Żółty"
+      }
+    ]
+  },
+  {
+    "id": "bruises",
+    "name": "Bruises",
+    "name_pl": "Przebarwienia",
+    "description": {
+      "en": "While identifying mushrooms, check for bruising by nicking the top and bottom of the cap and watching for any color change. Try this within 30 minutes of picking, as specimens that are not fresh won't give a reliable result.",
+      "pl": "Identyfikując grzyby, sprawdź, czy nie mają przebarwień, nacinając górną i dolną część kapelusza i obserwując zmianę koloru. Zrób to w ciągu 30 minut od zebrania grzyba, ponieważ te, które nie są świeże, nie dadzą wiarygodnych wyników."
+    },
+    "values": [
+      {
+        "id": "t",
+        "name": "Yes",
+        "name_pl": "Tak"
+      },
+      {
+        "id": "f",
+        "name": "No",
+        "name_pl": "Nie"
+      }
+    ]
+  },
+  {
+    "id": "odor",
+    "name": "Odor",
+    "name_pl": "Zapach",
+    "values": [
+      {
+        "id": "a",
+        "name": "Almond",
+        "name_pl": "Migdałowy"
+      },
+      {
+        "id": "c",
+        "name": "Creosote",
+        "name_pl": "Krezotowy/drzewny"
+      },
+      {
+        "id": "f",
+        "name": "Foul",
+        "name_pl": "Cuchnący"
+      },
+      {
+        "id": "l",
+        "name": "Anise",
+        "name_pl": "Anyżowy"
+      },
+      {
+        "id": "m",
+        "name": "Musty",
+        "name_pl": "Stęchły"
+      },
+      {
+        "id": "n",
+        "name": "None",
+        "name_pl": "Bezzapachowy"
+      },
+      {
+        "id": "p",
+        "name": "Pungent",
+        "name_pl": "Cierpki"
+      },
+      {
+        "id": "s",
+        "name": "Spicy",
+        "name_pl": "Pikantny"
+      },
+      {
+        "id": "y",
+        "name": "Fishy",
+        "name_pl": "Rybny"
+      }
+    ]
+  },
+  {
+    "id": "gill-attachment",
+    "name": "Gill Attachment",
+    "name_pl": "Blaszka",
+    "values": [
+      {
+        "id": "a",
+        "name": "Attached",
+        "name_pl": "Przyłączona"
+      },
+      {
+        "id": "f",
+        "name": "Free",
+        "name_pl": "Odłączona"
+      }
+    ],
+    "suggestion": [
+      {
+        "id": "a",
+        "name": "Attached",
+        "name_pl": "Przyłączona",
+        "image": "/illustrations/gill_attachment/gill_attachment_a.png"
+      },
+      {
+        "id": "f",
+        "name": "Free",
+        "name_pl": "Odłączona",
+        "image": "/illustrations/gill_attachment/gill_attachment_f.png"
+      }
+    ]
+  },
+  {
+    "id": "gill-spacing",
+    "name": "Gill Spacing",
+    "name_pl": "Rozmieszczenie blaszek",
+    "values": [
+      {
+        "id": "c",
+        "name": "Close",
+        "name_pl": "Bliskie"
+      },
+      {
+        "id": "w",
+        "name": "Crowded",
+        "name_pl": "Ciasne"
+      }
+    ],
+    "suggestion": [
+      {
+        "id": "c",
+        "name": "Close",
+        "name_pl": "Bliskie",
+        "image": "/illustrations/gill_spacing/gill_spacing_c.png"
+      },
+      {
+        "id": "w",
+        "name": "Crowded",
+        "name_pl": "Ciasne",
+        "image": "/illustrations/gill_spacing/gill_spacing_w.png"
+      }
+    ]
+  },
+  {
+    "id": "gill-size",
+    "name": "Gill Size",
+    "name_pl": "Rozmiar blaszki",
+    "values": [
+      {
+        "id": "b",
+        "name": "Broad",
+        "name_pl": "Szeroka"
+      },
+      {
+        "id": "n",
+        "name": "Narrow",
+        "name_pl": "Wąska"
+      }
+    ]
+  },
+  {
+    "id": "gill-color",
+    "name": "Gill Color",
+    "name_pl": "Kolor blaszki",
+    "values": [
+      {
+        "id": "b",
+        "name": "Buff",
+        "name_pl": "Spłowiało żółta"
+      },
+      {
+        "id": "e",
+        "name": "Red",
+        "name_pl": "Czerwona"
+      },
+      {
+        "id": "g",
+        "name": "Gray",
+        "name_pl": "Szara"
+      },
+      {
+        "id": "h",
+        "name": "Chocolate",
+        "name_pl": "Czekoladowa"
+      },
+      {
+        "id": "k",
+        "name": "Black",
+        "name_pl": "Czarna"
+      },
+      {
+        "id": "n",
+        "name": "Brown",
+        "name_pl": "Brązowa"
+      },
+      {
+        "id": "o",
+        "name": "Orange",
+        "name_pl": "Pomarańczowa"
+      },
+      {
+        "id": "p",
+        "name": "Pink",
+        "name_pl": "Różowa"
+      },
+      {
+        "id": "r",
+        "name": "Green",
+        "name_pl": "Zielona"
+      },
+      {
+        "id": "u",
+        "name": "Purple",
+        "name_pl": "Fioletowa"
+      },
+      {
+        "id": "w",
+        "name": "White",
+        "name_pl": "Biała"
+      },
+      {
+        "id": "y",
+        "name": "Yellow",
+        "name_pl": "Żółta"
+      }
+    ]
+  },
+  {
+    "id": "stalk-shape",
+    "name": "Stalk Shape",
+    "name_pl": "Kształt trzona",
+    "values": [
+      {
+        "id": "e",
+        "name": "Enlarging",
+        "name_pl": "Zwężający się ku górze"
+      },
+      {
+        "id": "t",
+        "name": "Tapering",
+        "name_pl": "Zwężający się ku dołowi"
+      }
+    ]
+  },
+  {
+    "id": "stalk-root",
+    "name": "Stalk Root",
+    "name_pl": "Kształt na odcinku połączenia trzona z grzybnią",
+    "values": [
+      {
+        "id": "b",
+        "name": "Bulbous",
+        "name_pl": "Okrągły"
+      },
+      {
+        "id": "c",
+        "name": "Club",
+        "name_pl": "Maczugowaty"
+      },
+      {
+        "id": "e",
+        "name": "Equal",
+        "name_pl": "Równomierny"
+      },
+      {
+        "id": "m",
+        "name": "Missing",
+        "name_pl": "Brak trzona"
+      },
+      {
+        "id": "r",
+        "name": "Rooted",
+        "name_pl": "Ukorzeniony"
+      }
+    ],
+    "suggestion": [
+      {
+        "id": "b",
+        "name": "Bulbous",
+        "name_pl": "Okrągły",
+        "image": "/illustrations/stalk_root/stalk_root_b.png"
+      },
+      {
+        "id": "c",
+        "name": "Club",
+        "name_pl": "Maczugowaty",
+        "image": "/illustrations/stalk_root/stalk_root_c.png"
+      },
+      {
+        "id": "e",
+        "name": "Equal",
+        "name_pl": "Równomierny",
+        "image": "/illustrations/stalk_root/stalk_root_e.png"
+      },
+      {
+        "id": "m",
+        "name": "Missing",
+        "name_pl": "Brak trzona",
+        "image": "/illustrations/stalk_root/stalk_root_m.png"
+      },
+      {
+        "id": "r",
+        "name": "Rooted",
+        "name_pl": "Ukorzeniony",
+        "image": "/illustrations/stalk_root/stalk_root_r.png"
+      }
+    ]
+  },
+  {
+    "id": "stalk-surface-above-ring",
+    "name": "Stalk Surface Above Ring",
+    "name_pl": "Powierzchnia trzona powyżej pierścienia",
+    "values": [
+      {
+        "id": "f",
+        "name": "Fibrous",
+        "name_pl": "Włóknista"
+      },
+      {
+        "id": "k",
+        "name": "Silky",
+        "name_pl": "Jedwabna"
+      },
+      {
+        "id": "s",
+        "name": "Smooth",
+        "name_pl": "Gładka"
+      },
+      {
+        "id": "y",
+        "name": "Scaly",
+        "name_pl": "Źłobiona"
+      }
+    ]
+  },
+  {
+    "id": "stalk-surface-below-ring",
+    "name": "Stalk Surface Below Ring",
+    "name_pl": "Powierzchnia trzona poniżej pierścienia",
+    "values": [
+      {
+        "id": "f",
+        "name": "Fibrous",
+        "name_pl": "Włóknista"
+      },
+      {
+        "id": "k",
+        "name": "Silky",
+        "name_pl": "Jedwabna"
+      },
+      {
+        "id": "s",
+        "name": "Smooth",
+        "name_pl": "Gładka"
+      },
+      {
+        "id": "y",
+        "name": "Scaly",
+        "name_pl": "Źłobiona"
+      }
+    ]
+  },
+  {
+    "id": "stalk-color-above-ring",
+    "name": "Stalk Color Above Ring",
+    "name_pl": "Kolor trzona powyżej pierścienia",
+    "values": [
+      {
+        "id": "b",
+        "name": "Buff",
+        "name_pl": "Spłowiały żółty"
+      },
+      {
+        "id": "c",
+        "name": "Cinnamon",
+        "name_pl": "Cynamonowy"
+      },
+      {
+        "id": "e",
+        "name": "Red",
+        "name_pl": "Czerwony"
+      },
+      {
+        "id": "g",
+        "name": "Gray",
+        "name_pl": "Szary"
+      },
+      {
+        "id": "n",
+        "name": "Brown",
+        "name_pl": "Brązowy"
+      },
+      {
+        "id": "o",
+        "name": "Orange",
+        "name_pl": "Pomarańczowy"
+      },
+      {
+        "id": "p",
+        "name": "Pink",
+        "name_pl": "Różowy"
+      },
+      {
+        "id": "w",
+        "name": "White",
+        "name_pl": "Biały"
+      },
+      {
+        "id": "y",
+        "name": "Yellow",
+        "name_pl": "Żółty"
+      }
+    ]
+  },
+  {
+    "id": "stalk-color-below-ring",
+    "name": "Stalk Color Below Ring",
+    "name_pl": "Kolor trzona poniżej pierścienia",
+    "values": [
+      {
+        "id": "b",
+        "name": "Buff",
+        "name_pl": "Spłowiały żółty"
+      },
+      {
+        "id": "c",
+        "name": "Cinnamon",
+        "name_pl": "Cynamonowy"
+      },
+      {
+        "id": "e",
+        "name": "Red",
+        "name_pl": "Czerwony"
+      },
+      {
+        "id": "g",
+        "name": "Gray",
+        "name_pl": "Szary"
+      },
+      {
+        "id": "n",
+        "name": "Brown",
+        "name_pl": "Brązowy"
+      },
+      {
+        "id": "o",
+        "name": "Orange",
+        "name_pl": "Pomarańczowy"
+      },
+      {
+        "id": "p",
+        "name": "Pink",
+        "name_pl": "Różowy"
+      },
+      {
+        "id": "w",
+        "name": "White",
+        "name_pl": "Biały"
+      },
+      {
+        "id": "y",
+        "name": "Yellow",
+        "name_pl": "Żółty"
+      }
+    ]
+  },
+  {
+    "id": "veil-color",
+    "name": "Veil Color",
+    "name_pl": "Veil color",
+    "values": [
+      {
+        "id": "n",
+        "name": "Brown",
+        "name_pl": "Brązowy"
+      },
+      {
+        "id": "o",
+        "name": "Orange",
+        "name_pl": "Pomarańczowy"
+      },
+      {
+        "id": "w",
+        "name": "White",
+        "name_pl": "Biały"
+      },
+      {
+        "id": "y",
+        "name": "Yellow",
+        "name_pl": "Żółty"
+      }
+    ]
+  },
+  {
+    "id": "ring-number",
+    "name": "Ring Number",
+    "name_pl": "Liczba pierścieni",
+    "values": [
+      {
+        "id": "n",
+        "name": "None",
+        "name_pl": "Brak"
+      },
+      {
+        "id": "o",
+        "name": "One",
+        "name_pl": "Jeden"
+      },
+      {
+        "id": "t",
+        "name": "Two",
+        "name_pl": "Dwa"
+      }
+    ]
+  },
+  {
+    "id": "ring-type",
+    "name": "Ring Type",
+    "name_pl": "Typ pierścienia",
+    "values": [
+      {
+        "id": "e",
+        "name": "Evanescent",
+        "name_pl": "Zanikający"
+      },
+      {
+        "id": "f",
+        "name": "Flaring",
+        "name_pl": "Rozkloszowany"
+      },
+      {
+        "id": "l",
+        "name": "Large",
+        "name_pl": "Duży"
+      },
+      {
+        "id": "n",
+        "name": "None",
+        "name_pl": "Brak"
+      },
+      {
+        "id": "p",
+        "name": "Pendant",
+        "name_pl": "Zwisający"
+      }
+    ]
+  },
+  {
+    "id": "spore-print-color",
+    "name": "Spore Print Color",
+    "name_pl": "Kolor po odciśnięciu sporów",
+    "values": [
+      {
+        "id": "b",
+        "name": "Buff",
+        "name_pl": "Spłowiały żółty"
+      },
+      {
+        "id": "h",
+        "name": "Chocolate",
+        "name_pl": "Czekoladowy"
+      },
+      {
+        "id": "k",
+        "name": "Black",
+        "name_pl": "Czarny"
+      },
+      {
+        "id": "n",
+        "name": "Brown",
+        "name_pl": "Brązowy"
+      },
+      {
+        "id": "o",
+        "name": "Orange",
+        "name_pl": "Pomarańczowy"
+      },
+      {
+        "id": "r",
+        "name": "Green",
+        "name_pl": "Zielony"
+      },
+      {
+        "id": "u",
+        "name": "Purple",
+        "name_pl": "Fioletowy"
+      },
+      {
+        "id": "w",
+        "name": "White",
+        "name_pl": "Biały"
+      },
+      {
+        "id": "y",
+        "name": "Yellow",
+        "name_pl": "Żółty"
+      }
+    ]
+  },
+  {
+    "id": "population",
+    "name": "Population",
+    "name_pl": "Charakterystyka populacji",
+    "values": [
+      {
+        "id": "a",
+        "name": "Abundant",
+        "name_pl": "Obfite"
+      },
+      {
+        "id": "c",
+        "name": "Clustered",
+        "name_pl": "W klastrze"
+      },
+      {
+        "id": "n",
+        "name": "Numerous",
+        "name_pl": "Liczne"
+      },
+      {
+        "id": "s",
+        "name": "Scattered",
+        "name_pl": "Rozsiane"
+      },
+      {
+        "id": "v",
+        "name": "Several",
+        "name_pl": "Nieliczne"
+      },
+      {
+        "id": "y",
+        "name": "Solitary",
+        "name_pl": "Samotne"
+      }
+    ]
+  },
+  {
+    "id": "habitat",
+    "name": "Habitat",
+    "name_pl": "Środowisko występowania",
+    "values": [
+      {
+        "id": "d",
+        "name": "Woods",
+        "name_pl": "Las"
+      },
+      {
+        "id": "g",
+        "name": "Grasses",
+        "name_pl": "Trawy"
+      },
+      {
+        "id": "l",
+        "name": "Leaves",
+        "name_pl": "Liście"
+      },
+      {
+        "id": "m",
+        "name": "Meadows",
+        "name_pl": "Łąka"
+      },
+      {
+        "id": "p",
+        "name": "Paths",
+        "name_pl": "Ścieżki"
+      },
+      {
+        "id": "u",
+        "name": "Urban",
+        "name_pl": "Miasto"
+      },
+      {
+        "id": "w",
+        "name": "Waste",
+        "name_pl": "Odpady"
+      }
+    ]
+  }
+]
