@@ -1,20 +1,20 @@
 <template>
   <Listbox v-model="selectedItem">
     <div :class="$style['dropdown-wrapper']">
-      <ListboxButton
-        as="a"
-        role="button"
-        tabindex="0"
-        :class="[$style['dropdown'], { [$style['dropdown--wide']]: wide }]"
-        v-slot="{ open }">
-        <span
+      <div
           :class="[
             $style['dropdown-label'],
             { [$style['dropdown-label--small']]: smallLabel },
             { [$style['dropdown-label--dense']]: dense }
           ]">
           {{ label }}:
-        </span>
+      </div>
+      <ListboxButton
+        as="a"
+        role="button"
+        tabindex="0"
+        :class="[$style['dropdown'], { [$style['dropdown--wide']]: wide }]"
+        v-slot="{ open }">
         <div
           :class="$style['dropdown-overlay']"
           :style="{
@@ -166,6 +166,7 @@ $base-z-index: 0;
   flex-direction: column;
   z-index: $base-z-index + 40;
   overflow-x: auto;
+  user-select: none;
 
   &-content {
     display: flex;
@@ -179,6 +180,7 @@ $base-z-index: 0;
     overflow-x: auto;
     max-width: 768px;
     margin: 0 auto;
+    user-select: auto;
 
     &-item {
       display: flex;
@@ -233,9 +235,6 @@ $base-z-index: 0;
   }
 
   &-label {
-    position: absolute;
-    left: 0;
-    top: -1.205rem;
     padding: 0 5px;
     z-index: $base-z-index + 10;
     font-size: 1.66rem;
@@ -245,7 +244,6 @@ $base-z-index: 0;
 
     &--small {
       font-size: 1.2rem;
-      top: -1.8rem;
     }
 
     &--dense {
@@ -269,6 +267,12 @@ $base-z-index: 0;
   &-wrapper {
     position: relative;
     margin-top: 34px;
+    height: 95px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 303px;
   }
 
   &-list {
@@ -286,6 +290,7 @@ $base-z-index: 0;
     box-shadow: 0 0 0 1px rgba(#000, 0.05);
     color: white;
     z-index: $base-z-index + 20;
+    top: 100%;
 
     &:focus {
       outline: none;

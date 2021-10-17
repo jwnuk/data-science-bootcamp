@@ -133,6 +133,8 @@ export default {
     bottom: 0;
     left: 0;
     pointer-events: none;
+    background-color: rgba(17, 17, 17, 0.4);
+    z-index: -1;
   }
 
   &-hidden {

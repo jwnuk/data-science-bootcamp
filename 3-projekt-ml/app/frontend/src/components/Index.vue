@@ -38,7 +38,10 @@
         :suggestion="mushroom.suggestion ? localizeValues(mushroom.suggestion) : undefined"
         @update-item="(item) => onItemUpdate(mushroom, item)"/>
     </div>
-    <layout-button style="margin: 3.5em 0" :disabled="loading" @click="submit">
+    <layout-button
+      style="margin: 3.5em 0"
+      :disabled="loading || !hasSelection"
+      @click="e => !(loading || !hasSelection) && submit()">
       {{ localize('check') }}
     </layout-button>
     <layout-modal v-model:open="isResultsModalOpen">
@@ -78,19 +81,25 @@ const locals = {
     en: 'E-Grzybiarz',
   },
   'app-description': {
-    pl: 'Aplikacja do predykcji jadalności grzybów oparta o modele Machine Learning 🍄.',
-    en: 'Aplikacja do predykcji jadalności grzybów oparta o modele Machine Learning 🍄.',
+    pl: `Aplikacja do predykcji jadalności grzybów oparta o modele Machine Learning 🍄.\n
+Instrukcja użycia: W celu uzyskania predykcji, czy grzyb jest trujący wprowadź cechy grzyba, którego planujesz zebrać.\n
+Aby otrzymać jak najpewniejszy wynik, opisz grzyb jak największą ilością cech, w szczególności uwzględniając zapach, rozmiar blaszki, przebarwienia, kolor po odciśnięciu sporów, powierzchnię trzona oraz kształt na jego połączeniu z grzybnią.\n
+Smacznego!`,
+    en: `Aplication for prediction whether the mushroom is edible or not 🍄.\n
+How-to: In order to know if the mushroom is poisonous, put in characteristics of the mushroom which you plan to pick.\n
+The more fields you fill, the better the prediction, especially pay attention to odor, gill size, bruises, spore print color, stalk root and surface.\n
+Bon appétit!`,
   },
   'prediction-results': {
     pl: 'Wyniki predykcji 💫',
     en: 'Prediction results 💫',
   },
   'prediction-result-poisonous': {
-    pl: 'Grzyb moze byc <span style="color:#f00">trujacy</span>! 🍄',
+    pl: 'Grzyb może być <span style="color:#f00">trujący</span>! 🍄',
     en: 'Mushroom may be <span style="color:#f00">poisonous</! 🍄',
   },
   'prediction-result-not-poisonous': {
-    pl: 'Grzyb moze nie byc trujacy :)',
+    pl: 'Grzyb nie powinien być trujący :)',
     en: 'Mushroom may not be poisonous :)',
   },
   'close-modal': {
@@ -118,10 +127,11 @@ export default {
     const preferredLanguage = ref('en');
     const isResultsModalOpen = ref(false);
     const predictionResult = ref({ poisonous: -1, accuracy: 0 });
+    const hasSelection = ref(false);
 
     function fetchConfig() {
       loading.value = true;
-      return fetch('http://localhost:5000/api/config', {
+      return fetch('https://jdszr4-mushroom.herokuapp.com/api/config', {
         method: 'get',
         headers: {
           'content-type': 'application/json',
@@ -162,6 +172,7 @@ export default {
       preferredLanguage,
       isResultsModalOpen,
       predictionResult,
+      hasSelection,
     };
   },
   methods: {
@@ -195,13 +206,12 @@ export default {
       }
 
       this.selection[mushroom.id] = item.id;
+      this.hasSelection = true;
     },
     submit() {
-      console.log(this.selection);
-
       this.loading = true;
 
-      return fetch('http://localhost:5000/api/predict', {
+      return fetch('https://jdszr4-mushroom.herokuapp.com/api/predict', {
         method: 'post',
         body: JSON.stringify(this.selection),
         headers: {
@@ -250,6 +260,7 @@ export default {
   font-size: 1.4rem;
   letter-spacing: 1px;
   max-width: 80%;
+  white-space: pre-wrap;
 }
 
 .form-grid {
