@@ -1,7 +1,3 @@
-# way to upload image (flask): endpoint
-# save image
-# function to make prediction on image
-# show results
 import os
 from flask import Flask
 from flask import render_template, request
@@ -14,37 +10,36 @@ import tensorflow_datasets as tfds
 import matplotlib.pyplot as plt
 import seaborn as sns
 from tensorflow import keras
-import warnings
-import sys 
+from tensorflow.keras import models
+import sys
 
 sys.path.append('../..')
 
-#IMPORT WSSYSTKICH IMPORTÓW POTRZEBNYCH DO MODELU I PREDYKCJI
-app = Flask(__name__)
-UPLOAD_FOLDER =  "/C:/Users/jk/Desktop/data science - infoshare/projekt_SQL/jdszr4-edc/4-projekt-dl/app/static"
-DEVICE = "cuda"
-MODEL = load_model('model_tl.h5')
+path_parent =os.path.dirname(os.getcwd())
+model_path = os.path.join(path_parent, 'C://Users//jk//Desktop//data science - infoshare//projekt_SQL//jdszr4-edc//4-projekt-dl//transfer_learning//model_tl.h5')
 
-#PASTE MODEL HERE
+app = Flask(__name__, template_folder='./template')
+UPLOAD_FOLDER =  ".../.../app/static"
+MODEL = models.load_model(model_path)
 
-#PASTE PREDICT FUNCTION
-#def predict(image_path, model)
+@app.route("/", methods=["GET", "POST"])
+def index():
+    return render_template("index.html")
 
-@app.route("/template", methods=["GET", "POST"])
-def upload_predict():
-    if request.method == "POST":
-        image_file = request.files["image"]
-        if image_file:
-            image_location = os.path.join(
+@app.route('/upload', methods=['POST', 'GET'])
+def upload():
+    image_file = request.files["image"]
+    image_location = os.path.join(
                 UPLOAD_FOLDER,
                 image_file.filename
-            )
-            image_file.save(image_location)
-            pred = predict(image_location, MODEL)[0]
-            return render_template("index.html", prediction=pred, image_loc = image_file.filename)
-    return render_template("index.html", prediction=0, image_loc = None)
+                )
+    image_file.save(image_location)
+    return redirect('/predict')
 
+@app.route('/predict', methods = ['GET','POST'])
+def predict():
+    pred = predict_model(image_location, MODEL)[0]
+    return render_template("index.html", prediction=pred, image_loc = image_file.filename)
+    
 if __name__ == "__main__":
     app.run(debug=True)
-
-
