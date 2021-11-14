@@ -29,5 +29,5 @@ class DLModel:
 
         to_predict = self.preprocess_image(image_path)
         prediction = self.model.predict(to_predict[np.newaxis, ...])
-        return 'Healthy' if prediction > 0 else 'Brain tumor'
+        return 'RTG prawidłowe (guz mózgu niewykryty)' if prediction > 0 else 'Guz mózgu wykryty'
 
