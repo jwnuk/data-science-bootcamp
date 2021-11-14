@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
+    <meta name="description" content="Brain Cancer Prediction">
     
     <title>Brain Cancer Prediction</title>
 
@@ -16,14 +16,16 @@
   </head>
 
   <body class="text-center">
-    <form class="form-upload" method=post enctype=multipart/form-data>
+    <form class="form-upload" action="/upload" method="post" enctype="multipart/form-data">
       <h1 class="h3 mb-3 font-weight-normal">Załaduj obraz</h1>
       <input type="file" id="image" name = "image" class="form-control" required autofocus>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Wykonaj predykcję</button>
-      <br>
-      <!-- tutaj chcialam dac if statement zeby dawal predykcje tylko jak damy zdjecie, ale cos nie dziala. gosciu z tutorailu wpisywal w taki sposob -->
-      <img class="mb-4" src="../../static/{{image_loc}}" alt="" width="224" height="224">
-      <h3 class="h3 mb-3 font-weight-normal"> Wynik: {{prediction}}</h3>
+      <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Wykonaj predykcję</button>
+      {% if image_loc %}
+      <div class="mt-4">
+        <img class="mb-4" src="/public/{{image_loc}}" alt="" width="224" height="224">
+        <h3 class="h3 mb-3 font-weight-normal"> Wynik: {{prediction}}</h3>
+      </div>
+      {% endif %}
     </form>
   </body>
 </html>

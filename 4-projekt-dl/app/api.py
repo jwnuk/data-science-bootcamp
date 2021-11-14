@@ -1,25 +1,16 @@
 import os
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, send_from_directory
 import numpy as np
-import pathlib
-import PIL
 import os
-import tensorflow as tf
-import tensorflow_datasets as tfds
-from tensorflow import keras
-from tensorflow.keras import models
 import sys
 import prediction_for_app as pfa
 
 sys.path.append('../..')
 
-#path_parent =os.path.dirname(os.getcwd())
-#model_path = os.path.join(path_parent, 'C://Users//jk//Desktop//data science - infoshare//projekt_SQL//jdszr4-edc//4-projekt-dl//model_tl.h5')
-
 app = Flask(__name__, template_folder='./template')
-UPLOAD_FOLDER =  "../../app/static"
-MODEL = pfa.DLModel('../../4-projekt-dl//model_tl.h5', '../../4-projekt-dl/weights/model_tl', (224, 224))
+UPLOAD_FOLDER =  "./public"
+MODEL = pfa.DLModel('../../4-projekt-dl/model_tl.h5', '../../4-projekt-dl/weights/model_tl', (224, 224))
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -32,19 +23,14 @@ def upload():
                 UPLOAD_FOLDER,
                 image_file.filename
                 )
-    image_file.save(image_location)
-    return redirect('/predict')
-
-@app.route('/predict', methods = ['GET','POST'])
-def predict():
-    image_file = request.files["image"]
-    image_location = os.path.join(
-                UPLOAD_FOLDER,
-                image_file.filename
-                )
-    image.save(image_location)
+    image_file.save(image_location) # do not serve in production, unsecure ;)
     pred = MODEL.predict_for_user_input(image_location)[0]
     return render_template("index.html", prediction = pred, image_loc = image_file.filename)
     
+# serve uploads
+@app.route('/public/<path:path>')
+def send_js (path):
+    return send_from_directory('public', path)
+
 if __name__ == "__main__":
     app.run(debug=True)
