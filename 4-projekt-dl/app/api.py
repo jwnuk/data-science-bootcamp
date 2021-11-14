@@ -7,8 +7,6 @@ import PIL
 import os
 import tensorflow as tf
 import tensorflow_datasets as tfds
-import matplotlib.pyplot as plt
-import seaborn as sns
 from tensorflow import keras
 from tensorflow.keras import models
 import sys
@@ -16,12 +14,12 @@ import prediction_for_app as pfa
 
 sys.path.append('../..')
 
-path_parent =os.path.dirname(os.getcwd())
-model_path = os.path.join(path_parent, 'C://Users//jk//Desktop//data science - infoshare//projekt_SQL//jdszr4-edc//4-projekt-dl//model_tl.h5')
+#path_parent =os.path.dirname(os.getcwd())
+#model_path = os.path.join(path_parent, 'C://Users//jk//Desktop//data science - infoshare//projekt_SQL//jdszr4-edc//4-projekt-dl//model_tl.h5')
 
 app = Flask(__name__, template_folder='./template')
-UPLOAD_FOLDER =  ".../.../app/static"
-MODEL = pfa.DLModel(model_path, 'C://Users//jk//Desktop//data science - infoshare//projekt_SQL//jdszr4-edc//4-projekt-dl//weights//model_tl', (224, 224))
+UPLOAD_FOLDER =  "../../app/static"
+MODEL = pfa.DLModel('../../4-projekt-dl//model_tl.h5', '../../4-projekt-dl/weights/model_tl', (224, 224))
 
 @app.route("/", methods=["GET", "POST"])
 def index():
