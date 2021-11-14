@@ -24,7 +24,7 @@ def upload():
                 image_file.filename
                 )
     image_file.save(image_location) # do not serve in production, unsecure ;)
-    pred = MODEL.predict_for_user_input(image_location)[0]
+    pred = MODEL.predict_for_user_input(image_location)
     return render_template("index.html", prediction = pred, image_loc = image_file.filename)
     
 # serve uploads
