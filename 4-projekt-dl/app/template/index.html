@@ -17,12 +17,12 @@
 
   <body class="text-center">
     <form class="form-upload" action="/upload" method="post" enctype="multipart/form-data">
-      <h1 class="h3 mb-3 font-weight-normal">Prześlij zdjęcie RTG.</h1>
+      <h1 class="h3 mb-3 font-weight-normal">Prześlij obrazowanie tomografii mózgu.</h1>
       <input type="file" id="image" name = "image" class="form-control" required autofocus>
       <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Wykonaj predykcję</button>
       {% if image_loc %}
       <div class="mt-4">
-        <img class="mb-4" src="/public/{{image_loc}}" alt="Zdjęcie RTG" width="224" height="224">
+        <img class="mb-4" src="/public/{{image_loc}}" alt="TK mózgu" width="224" height="224">
         <h3 class="h3 mb-3 font-weight-normal"> Predykcja: {{prediction}}</h3>
       </div>
       {% endif %}
