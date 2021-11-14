@@ -18,7 +18,7 @@ sys.path.append('../..')
 
 path_parent =os.path.dirname(os.getcwd())
 model_path = os.path.join(path_parent, 'C://Users//jk//Desktop//data science - infoshare//projekt_SQL//jdszr4-edc//4-projekt-dl//transfer_learning//model_tl.h5')
-model_init  = pfa.DLModel('model_tl.h5', 'weights/model_tl', (224, 224))
+model_init  = pfa.DLModel(model_path, '../../weights/model_tl', (224, 224))
 
 app = Flask(__name__, template_folder='./template')
 UPLOAD_FOLDER =  ".../.../app/static"
